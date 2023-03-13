@@ -189,3 +189,9 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new Simple_Drum_RackAudioProcessor();
 }
+
+
+void Simple_Drum_RackAudioProcessor::loadFile(const juce::String& path)
+{
+   
+}

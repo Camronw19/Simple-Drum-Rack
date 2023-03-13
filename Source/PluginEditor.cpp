@@ -14,8 +14,12 @@
 Simple_Drum_RackAudioProcessorEditor::Simple_Drum_RackAudioProcessorEditor (Simple_Drum_RackAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
+    //textbox
+    addAndMakeVisible(testButton); 
+    testButton.setButtonText("testing"); 
+    //=========
+
+
     setSize (400, 300);
 }
 
@@ -36,6 +40,7 @@ void Simple_Drum_RackAudioProcessorEditor::paint (juce::Graphics& g)
 
 void Simple_Drum_RackAudioProcessorEditor::resized()
 {
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
+    auto r = getBounds(); 
+
+    testButton.setBounds(r.removeFromBottom(50)); 
 }
