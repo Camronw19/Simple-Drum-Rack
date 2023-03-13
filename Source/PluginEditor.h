@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "DrumCell.h"
 
 //==============================================================================
 /**
@@ -25,10 +26,9 @@ public:
     void resized() override;
 
 private:
-    juce::TextButton testButton;
-
+ 
+    DrumCell mDC1;
 
     Simple_Drum_RackAudioProcessor& audioProcessor;
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Simple_Drum_RackAudioProcessorEditor)
 };

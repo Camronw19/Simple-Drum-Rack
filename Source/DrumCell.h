@@ -29,9 +29,11 @@ public:
     void filesDropped(const juce::StringArray& files, int x, int y) override;
     bool isInterestedInFileDrag(const juce::StringArray& files) override;
 
-private:
-    juce::String mFileName { "" }; 
+    void setCellID(juce::String ID); 
 
+private:
+    juce::Label mCellID;
+    juce::Label mFileName;
 
 
     Simple_Drum_RackAudioProcessor& audioProcessor; 

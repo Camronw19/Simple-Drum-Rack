@@ -12,15 +12,12 @@
 
 //==============================================================================
 Simple_Drum_RackAudioProcessorEditor::Simple_Drum_RackAudioProcessorEditor (Simple_Drum_RackAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+    : AudioProcessorEditor (&p), audioProcessor (p), mDC1(p)
 {
-    //textbox
-    addAndMakeVisible(testButton); 
-    testButton.setButtonText("testing"); 
-    //=========
+    mDC1.setCellID("C1"); 
+    addAndMakeVisible(mDC1); 
 
-
-    setSize (400, 300);
+    setSize (600, 400);
 }
 
 Simple_Drum_RackAudioProcessorEditor::~Simple_Drum_RackAudioProcessorEditor()
@@ -33,14 +30,12 @@ void Simple_Drum_RackAudioProcessorEditor::paint (juce::Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
-    g.setColour (juce::Colours::white);
-    g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
 }
 
 void Simple_Drum_RackAudioProcessorEditor::resized()
 {
     auto r = getBounds(); 
 
-    testButton.setBounds(r.removeFromBottom(50)); 
+    mDC1.setBounds(50, 50, 200, 50); 
+
 }
