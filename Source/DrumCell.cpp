@@ -30,16 +30,15 @@ DrumCell::~DrumCell()
 
 void DrumCell::paint (juce::Graphics& g)
 {
-
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
-
+    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   
     g.setColour (juce::Colours::grey);
-    //g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
+
     juce::Rectangle<float> window;
     window.setBounds(0, 0, getWidth(), getHeight());
+
     g.drawRoundedRectangle(window, 6, 2);
-
-
+    g.setColour(juce::Colour::fromRGB(192, 192, 192));
+    g.fillRoundedRectangle(window, 6); 
 }
 
 void DrumCell::resized()
