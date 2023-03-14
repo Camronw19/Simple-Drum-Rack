@@ -22,6 +22,22 @@ Simple_Drum_RackAudioProcessor::Simple_Drum_RackAudioProcessor()
                        )
 #endif
 {
+    //registers basic audio formats (mp3, wav, etc.) so that you can stream audio
+    mFormatManager.registerBasicFormats(); 
+
+    //adds voices to the synthesizer based on const num declared in header file. 
+    for (int i = 0; i < mNumVoices; i++)
+    {
+        mSampler.addVoice(new juce::SamplerVoice);
+    }
+
+    //sets ADSR Parameters 
+    mADSRParameters.attack = 0.0;
+    mADSRParameters.decay = 0.0;
+    mADSRParameters.sustain = 5.0; 
+    mADSRParameters.release = 1.0; 
+
+
 }
 
 Simple_Drum_RackAudioProcessor::~Simple_Drum_RackAudioProcessor()
@@ -95,6 +111,7 @@ void Simple_Drum_RackAudioProcessor::prepareToPlay (double sampleRate, int sampl
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    mSampler.setCurrentPlaybackSampleRate(sampleRate);
 }
 
 void Simple_Drum_RackAudioProcessor::releaseResources()
@@ -144,18 +161,17 @@ void Simple_Drum_RackAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
+    juce::MidiMessage m;
+    juce::MidiBuffer::Iterator it{ midiMessages };
+    int sample;
+
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
     // Make sure to reset the state if your inner loop is processing
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
-    }
+    mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
 //==============================================================================
@@ -191,7 +207,18 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 }
 
 
-void Simple_Drum_RackAudioProcessor::loadFile(const juce::String& path)
+void Simple_Drum_RackAudioProcessor::loadFile(const juce::String& path, int midiKey)
 {
-   
+    juce::File file = juce::File(path); 
+    mFormatReader = mFormatManager.createReaderFor(file); 
+    
+    juce::BigInteger note = midiKey; 
+    juce::SamplerSound* newSound = new juce::SamplerSound("Sample", *mFormatReader, note, 0, 0.0, 0.0, 10.0); 
+
+    auto newSource = std::make_unique<juce::AudioFormatReaderSource>(mFormatReader, true); 
+    double lengthInSeconds = static_cast<double> (newSource->getTotalLength()) / mFormatReader->sampleRate;
+
+    mADSRParameters.decay = lengthInSeconds; 
+    newSound->setEnvelopeParameters(mADSRParameters); 
+    mSampler.addSound(newSound);
 }

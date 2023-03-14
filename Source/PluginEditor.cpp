@@ -12,10 +12,15 @@
 
 //==============================================================================
 Simple_Drum_RackAudioProcessorEditor::Simple_Drum_RackAudioProcessorEditor (Simple_Drum_RackAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p), mDC1(p)
+    : AudioProcessorEditor (&p), audioProcessor (p), mDC1(p), mDC2(p)
 {
     mDC1.setCellID("C1"); 
+    mDC1.setMidiKey(1); 
     addAndMakeVisible(mDC1); 
+
+    mDC2.setCellID("C2");
+    mDC2.setMidiKey(2);
+    addAndMakeVisible(mDC2);
 
     setSize (600, 400);
 }
@@ -36,6 +41,18 @@ void Simple_Drum_RackAudioProcessorEditor::resized()
 {
     auto r = getBounds(); 
 
-    mDC1.setBounds(50, 50, 200, 50); 
+    auto rCellBox = r.removeFromBottom(getHeight() / 2); 
+    rCellBox.setLeft(20); 
+    rCellBox.setRight(getWidth() - 20); 
+    rCellBox.setBottom(getHeight() - 20); 
+
+    auto rC1 = rCellBox.removeFromLeft(rCellBox.getWidth() / 2); 
+    auto rC2 = rCellBox; 
+
+    rC1.expand(-5, -5);
+    rC2.expand(-5, -5);
+
+    mDC1.setBounds(rC1);
+    mDC2.setBounds(rC2);
 
 }

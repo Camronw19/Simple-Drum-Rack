@@ -26,8 +26,8 @@ public:
     void resized() override;
 
 private:
- 
     DrumCell mDC1;
+    DrumCell mDC2; 
 
     Simple_Drum_RackAudioProcessor& audioProcessor;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Simple_Drum_RackAudioProcessorEditor)

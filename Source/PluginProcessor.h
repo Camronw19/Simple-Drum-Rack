@@ -57,9 +57,17 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     //==============================================================================
-    void loadFile(const juce::String& path);
+    void loadFile(const juce::String& path, int midiKey);
 
 private:
+
+    juce::Synthesiser mSampler;
+    juce::AudioFormatManager mFormatManager;
+    juce::AudioFormatReader* mFormatReader{ nullptr };
+    juce::ADSR::Parameters mADSRParameters; 
+
+    const int mNumVoices{ 8 };
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Simple_Drum_RackAudioProcessor)
 };

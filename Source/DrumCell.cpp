@@ -15,9 +15,13 @@
 DrumCell::DrumCell(Simple_Drum_RackAudioProcessor& p)
     : audioProcessor(p)
 {
+    mMidiKey = 0; 
+
+    mCellID.setColour(juce::Label::textColourId, juce::Colours::black); 
     mCellID.setText("", juce::dontSendNotification); 
     addAndMakeVisible(mCellID);
 
+    mFileName.setColour(juce::Label::textColourId, juce::Colours::black);
     mFileName.setText("Empty cell", juce::dontSendNotification); 
     mFileName.setJustificationType(juce::Justification::right); 
     addAndMakeVisible(mFileName); 
@@ -63,11 +67,11 @@ void DrumCell::filesDropped(const juce::StringArray& files, int x, int y)
         if (isInterestedInFileDrag(file))
         {
             //get the file name to print
-            auto myFile = std::make_unique<juce::File>(file); 
+            auto myFile = std::make_unique<juce::File>(file);
             mFileName.setText(myFile->getFileNameWithoutExtension(), juce::dontSendNotification);
 
             //load this file 
-            audioProcessor.loadFile(file);
+            audioProcessor.loadFile(file, mMidiKey);
             repaint();
         }
     }
@@ -88,4 +92,9 @@ bool DrumCell::isInterestedInFileDrag(const juce::StringArray& files)
 void DrumCell::setCellID(juce::String ID)
 {
     mCellID.setText(ID, juce::dontSendNotification);
+}
+
+void DrumCell::setMidiKey(int note)
+{
+    mMidiKey = note; 
 }
