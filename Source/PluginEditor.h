@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "DrumCell.h"
+#include "DrumCellContainer.h"
 
 //==============================================================================
 /**
